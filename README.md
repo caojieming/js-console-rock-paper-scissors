@@ -1,2 +1,2 @@
 # js-console-rock-paper-scissors
-Odin Project, JavaScript Basics, Project 1
+A simple JavaScript rock, paper, scissors game played mostly in the web console.
