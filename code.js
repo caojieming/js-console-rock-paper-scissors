@@ -1,95 +1,97 @@
+let humanScore = 0;
+let computerScore = 0;
 
-function playGame(numRounds) {
-    let humanScore = 0;
-    let computerScore = 0;
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.querySelector("#scissors");
+const score = document.querySelector("#score");
+const comments = document.querySelector("#comments");
+const selections = document.querySelector("#selections");
+const body = document.querySelector("body");
 
-    function playRound() {
-        humanChoice = getHumanChoice();
-        computerChoice = getComputerChoice();
+rock.addEventListener("click", playRock);
+paper.addEventListener("click", playPaper);
+scissors.addEventListener("click", playScissors);
+function playRock() { playRound("rock"); }
+function playPaper() { playRound("paper"); }
+function playScissors() { playRound("scissors"); }
 
-        console.log("You: " + humanChoice);
-        console.log("Computer: " + computerChoice);
 
-        switch(humanChoice) {
-            case "rock":
-                switch(computerChoice) {
-                    case "rock":
-                        console.log("Tie!");
-                        break;
-                    case "paper":
-                        console.log("You lose!")
-                        computerScore++;
-                        break;
-                    case "scissors":
-                        console.log("You win!")
-                        humanScore++;
-                        break;
-                    default:
-                        console.log("Something went wrong with the computer's choice.");
-                }
-                break;
-            case "paper":
-                switch(computerChoice) {
-                    case "rock":
-                        console.log("You win!")
-                        humanScore++;
-                        break;
-                    case "paper":
-                        console.log("Tie!");
-                        break;
-                    case "scissors":
-                        console.log("You lose!")
-                        computerScore++;
-                        break;
-                    default:
-                        console.log("Something went wrong with the computer's choice.");
-                }
-                break;
-            case "scissors":
-                switch(computerChoice) {
-                    case "rock":
-                        console.log("You lose!")
-                        computerScore++;
-                        break;
-                    case "paper":
-                        console.log("You win!")
-                        humanScore++;
-                        break;
-                    case "scissors":
-                        console.log("Tie!");
-                        break;
-                    default:
-                        console.log("Something went wrong with the computer's choice.");
-                }
-                break;
-            default:
-                console.log("Something went wrong with the player's choice.");
-        }
-
-        console.log("Current score: " + humanScore + " (player), " + computerScore + " (computer)")
+function playRound(selected) {
+    // don't run if one side has won 5 times
+    if(humanScore === 5 || computerScore === 5) {
+        return;
     }
 
-    for(let i = 0; i < numRounds; i++) {
-        console.log("Round " + (i+1) + ", start!");
-        playRound();
+    humanChoice = selected;
+    computerChoice = getComputerChoice();
+
+    selections.textContent = "You: " + humanChoice + ", Computer: " + computerChoice;
+
+    switch(humanChoice) {
+        case "rock":
+            switch(computerChoice) {
+                case "rock":
+                    comments.textContent = "Tie!";
+                    break;
+                case "paper":
+                    comments.textContent = "You lose!";
+                    computerScore++;
+                    break;
+                case "scissors":
+                    comments.textContent = "You win!";
+                    humanScore++;
+                    break;
+                default:
+                    comments.textContent = "Something went wrong with the computer's choice."
+            }
+            break;
+        case "paper":
+            switch(computerChoice) {
+                case "rock":
+                    comments.textContent = "You win!";
+                    humanScore++;
+                    break;
+                case "paper":
+                    comments.textContent = "Tie!";
+                    break;
+                case "scissors":
+                    comments.textContent = "You lose!";
+                    computerScore++;
+                    break;
+                default:
+                    comments.textContent = "Something went wrong with the computer's choice.";
+            }
+            break;
+        case "scissors":
+            switch(computerChoice) {
+                case "rock":
+                    comments.textContent = "You lose!";
+                    computerScore++;
+                    break;
+                case "paper":
+                    comments.textContent = "You win!";
+                    humanScore++;
+                    break;
+                case "scissors":
+                    comments.textContent = "Tie!";
+                    break;
+                default:
+                    comments.textContent = "Something went wrong with the computer's choice.";
+            }
+            break;
+        default:
+            comments.textContent = "Something went wrong with the computer's choice.";
     }
 
-    console.log("Game Over! Final Scores: " + humanScore + " (player), " + computerScore + " (computer)")
-    if(humanScore > computerScore) {
-        console.log("You win the game!");
-    }
-    else if(humanScore === computerScore) {
-        console.log("It was a complete tie!");
-    }
-    else {
-        console.log("You lost the game!");
-    }
+    score.textContent = "Current score: " + humanScore + " (player), " + computerScore + " (computer)";
 
+    if(humanScore === 5 || computerScore === 5) {
+        const gameOverMsg = document.createElement("div");
+        gameOverMsg.textContent = (humanScore === 5 ? "You win the game!" : "You lost the game!");
+        body.appendChild(gameOverMsg);
+    }
 }
-
-playGame(5);
-
-
 
 function getComputerChoice() {
     const choices = ["rock", "paper", "scissors"];
